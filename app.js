@@ -32,6 +32,7 @@ document.getElementById('chinese').addEventListener('click',()=>{chinese=true;re
 document.getElementById('screen-tabs').addEventListener('click',event=>{const button=event.target.closest('[data-screen]');if(!button)return;document.querySelectorAll('[data-screen]').forEach(b=>b.classList.toggle('active',b===button));const image=document.getElementById('product-screen');image.src=button.dataset.screen;image.alt=`正式应用：${button.textContent}`;});
 document.getElementById('copy').addEventListener('click',async()=>{
   const counts=totals();const text=['MenuCrew / Barcelona',...dishes.flatMap((dish,i)=>counts[i]>0?[`${chinese?dish.zh:dish.original} × ${counts[i]}`]:[]),'',dietary(),chinese?'食材及过敏原须向餐厅人工确认。':'Please confirm ingredients and allergens with the restaurant.'].join('\n');
-  try{await navigator.clipboard.writeText(text);document.getElementById('copy-status').textContent='订单已复制。';}catch{const field=document.getElementById('copy-fallback');field.hidden=false;field.value=text;field.focus();field.select();document.getElementById('copy-status').textContent='浏览器未允许自动复制，请复制下方已选中的订单。';}
+  const field=document.getElementById('copy-fallback');field.hidden=false;field.value=text;field.focus();field.select();document.getElementById('copy-status').textContent='订单已展开并选中，可手动复制。';
+  try{await navigator.clipboard.writeText(text);document.getElementById('copy-status').textContent='订单已复制。';}catch{document.getElementById('copy-status').textContent='浏览器未允许自动复制，请复制下方已选中的订单。';}
 });
 render();
